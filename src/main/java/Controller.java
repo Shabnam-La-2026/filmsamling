@@ -22,9 +22,9 @@ public class Controller {
     public ArrayList<Movie> searchMovies(String searchText) {
 
 
-              return movieCollection.searchMovies(searchText);
+        return movieCollection.searchMovies(searchText);
 
-            }
+    }
 
 
     public Boolean editMovie(Movie movie, String title, String director, int yearCreated, boolean inColor, int lengthInMinutes, String genre) {
@@ -34,7 +34,7 @@ public class Controller {
 
     public boolean deleteMovie(Movie movie) {
 
-               return movieCollection.deleteMovie(movie);
+        return movieCollection.deleteMovie(movie);
 
     }
 

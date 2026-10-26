@@ -22,13 +22,14 @@ public class Movie {
         this.lengthInMinutes = lengthInMinutes;
         this.yearCreated = yearCreated;
 
+
     }
 
     public String getTitle() {
         return title;
     }
 
-    public boolean isInColor()
+    public boolean getIsInColor()
     {
     return inColor;
     }

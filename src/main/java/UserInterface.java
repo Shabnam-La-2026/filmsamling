@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -24,9 +25,10 @@ public class UserInterface {
             printText("2. Film info.");
             printText("3. Opdatér film.");
             printText("4. Slet film.");
-            printText("5.har du set filmen.");
-            printText("6.vis alle filme");
-            printText("7. Afslut program.");
+            printText("5. marker som set.");
+            printText("6. listen over alle film");
+            printText("7. listen over film du ikke har set " );
+            printText("8. Afslut program.");
 
             System.out.print(">");
 
@@ -51,6 +53,9 @@ public class UserInterface {
                     showMovies();
                     break;
                 case "7":
+                    lastWatched();
+                    break;
+                case "8":
                     exit = true;
                     break;
                 default:
@@ -62,7 +67,7 @@ public class UserInterface {
     }
 
     public void create() {
-        System.out.println("\u001B[31mher kan du operete en film:\u001B[0m");
+        System.out.println("\u001B[31m her kan du operete en film:\u001B[0m");
         System.out.print("\u001B[34mTitel: ");
         String title = scanner.nextLine();
         System.out.print("director: ");
@@ -70,7 +75,7 @@ public class UserInterface {
         System.out.print("yearCreated: ");
         int yearCreated = scanner.nextInt();
         scanner.nextLine();
-        System.out.print("inColor: ");
+        System.out.print("inColor:\u001B[0m ");
         String input = scanner.nextLine();
         boolean inColor;
         if (input.equalsIgnoreCase("yes")) {
@@ -78,39 +83,54 @@ public class UserInterface {
         } else if (input.equalsIgnoreCase("no")) {
             inColor = false;
         } else {
-            System.out.println("answer with yes or no");
+            System.out.println("\u001B[31m answer with yes or no\u001B[0m");
             return;
         }
 
-        System.out.print("lengthMinutes: ");
+        System.out.print("\u001B[34m lengthMinutes:");
         int lengthInMinutes = scanner.nextInt();
         scanner.nextLine();
         System.out.print("genre:\u001B[0m ");
         String genre = scanner.nextLine();
 
+        boolean exist = false;
+        for (Movie existing : controller.getMovies()) {
+            if (existing.getTitle().equalsIgnoreCase(title)
+                    && existing.getDirector().equalsIgnoreCase(director)
+                    && existing.getGenre().equalsIgnoreCase(genre)
+                    && existing.getYearCreated() == yearCreated
+                    && existing.getIsInColor() == inColor
+                    && existing.getLengthInMinutes() == lengthInMinutes)
+                exist = true;
+            break;
+        }
+        if (exist){
 
-        controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, genre);
+                System.out.println(" \u001B[31mdu har alerede operertet den film\u001B[0m");
 
+            } else {
+                controller.addMovie(title, director, yearCreated, inColor, lengthInMinutes, genre);
+                printText("\u001B[31m Din film er nu oprettet\u001B[0m");
+            }
+        }
 
-        printText("\u001B[31mDin film er nu oprettet\u001B[0m");
-    }
 
     public void read() {
-        System.out.println("\u001B[31mhvad vil du søge? ");
+        System.out.println("\u001B[31m hvad vil du søge? ");
         System.out.println("> \u001B[0m");
         String searchText = scanner.nextLine();
         ArrayList<Movie> list = controller.searchMovies(searchText);
         if (list.isEmpty()) {
-            System.out.println("kan ikke finde denne søgning");
+            System.out.println("\u001B[31mkan ikke finde denne søgning\u001B[0m");
         }
         for (Movie movie : list) {
 
 
-            System.out.println(movie.getTitle() + " er skrevet af " + movie.getDirector() + " i " + movie.getYearCreated());
+            System.out.println(movie.getTitle() + "\u001B[31m er skrevet af\u001B[0m " + movie.getDirector() + " \u001B[31m i \u001B[0m " + movie.getYearCreated());
 
 
         }
-        printText("\u001B[31 Slut på liste.\u001B[0m");
+        printText("\u001B[31m Slut på liste.\u001B[0m");
     }
 
     public void update() {
@@ -119,157 +139,232 @@ public class UserInterface {
         String serchText = scanner.nextLine();
         ArrayList<Movie> list = controller.searchMovies(serchText);
         if (list.isEmpty()) {
-            System.out.println("\u001B[31der findes ikke filmen med dette title\u001B[0m");
+            System.out.println("\u001B[31m der findes ikke filmen med dette title\u001B[0m");
         } else if (list.size() > 1) {
             for (int i = 0; i < list.size(); i++) {
                 Movie m = list.get(i);
                 System.out.println((i + 1) + " : " + m.getTitle() + " som er fra " + m.getYearCreated());
             }
-            System.out.println("hvilket af dem skal opdateres");
-            System.out.println("> ");
+            System.out.println("\u001B[31m hvilket af dem skal opdateres");
+            System.out.println("> \u001B[0m");
             int nummer = scanner.nextInt();
             if (nummer >= 1 && nummer <= list.size()) {
+                scanner.nextLine();
                 edit(list.get(nummer - 1));
+
             }
         } else {
+
             edit(list.get(0));
         }
+
     }
 
     private void edit(Movie movie) {
-//        System.out.println("\u001B[31hvad vil du ændre dem til? ");
-//        System.out.print("> \u001B[0m");
-        System.out.println("\u001B[34m vil du ændre title (yes or no): ");
+        String title = movie.getTitle();
+        String director = movie.getDirector();
+        int yearCreated = movie.getYearCreated();
+        boolean inColor = movie.getIsInColor();
+        int lengthInMinutes = movie.getLengthInMinutes();
+        String genre = movie.getGenre();
+
+        System.out.println("\u001B[31m vil du ændre title (yes or no): \u001B[0m");
         String INPUT = scanner.nextLine();
         if (INPUT.equalsIgnoreCase("yes")) {
-            System.out.println("hvad skal title ændres til");
-            movie.setTitle(scanner.nextLine());
+            System.out.println("\u001B[31mhvad skal title ændres til \u001B[0m");
+            title = scanner.nextLine();
         }
-        if (INPUT.equalsIgnoreCase("no")){
-            System.out.println("title er uændret");
+        if (INPUT.equalsIgnoreCase("no")) {
+            System.out.println("\u001B[31mtitle er uændret \u001B[0m");
         }
-        System.out.println("\u001B[34m vil du ændre dirctor (yes or no): ");
+        System.out.println("\u001B[31m vil du ændre dirctor (yes or no): ");
         String INPUT1 = scanner.nextLine();
         if (INPUT1.equalsIgnoreCase("yes")) {
-            System.out.println("hvad skal dirctor ændres til");
-            movie.setDirector(scanner.nextLine());
+            System.out.println("\u001B[31m hvad skal dirctor ændres til\u001B[0m");
+            director = scanner.nextLine();
         }
-        if (INPUT1.equalsIgnoreCase("no")){
-            System.out.println("dirctor er uændret");
+        if (INPUT1.equalsIgnoreCase("no")) {
+            System.out.println("\u001B[31m dirctor er uændret\u001B[0m");
         }
-        System.out.println("\u001B[34m vil du ændre yearCreated (yes or no): ");
+        System.out.println("\u001B[31m vil du ændre yearCreated (yes or no): \u001B[0m");
         String INPUT2 = scanner.nextLine();
         if (INPUT2.equalsIgnoreCase("yes")) {
-            System.out.println("hvad skal yearCreated ændres til");
-            movie.setYearCreated(scanner.nextInt());
+            System.out.println("\u001B[31mhvad skal yearCreated ændres til\u001B[0m");
+            yearCreated = scanner.nextInt();
+            scanner.nextLine();
         }
-        if (INPUT2.equalsIgnoreCase("no")){
-            System.out.println("yearCreated er uændret");
-        }
-
-
-        scanner.nextLine();
-
-    boolean inColor;
-        do
-
-    {
-
-
-        System.out.println("inColor (yes or no):  ");
-        String input = scanner.nextLine();
-        if (input.equalsIgnoreCase("yes")) {
-            inColor = true;
-            break;
-        } else if (input.equalsIgnoreCase("no")) {
-            inColor = false;
-            break;
+        if (INPUT2.equalsIgnoreCase("no")) {
+            System.out.println("\u001B[31myearCreated er uændret\u001B[0m");
         }
 
-    } while(true);
-        System.out.println("\u001B[34m vil du ændre lengthMinutes (yes or no): ");
+        do {
+
+            System.out.println("\u001B[31m vil du ændre inColor (yes or no):\u001B[0m ");
+            String INPUt = scanner.nextLine();
+            if (INPUt.equalsIgnoreCase("yes")) {
+                System.out.println("\u001B[31m hvad skal inColor ændres til\u001B[0m");
+                String input = scanner.nextLine();
+                if (input.equalsIgnoreCase("yes")) {
+                    inColor = true;
+                    break;
+                } else if (input.equalsIgnoreCase("no")) {
+                    inColor = false;
+                    break;
+                }
+
+
+            }else if (INPUt.equalsIgnoreCase("no")){
+                System.out.println("\u001B[31minColor er uændtet\u001B[0m");
+                break;
+            }
+        } while (true);
+
+
+        System.out.println("\u001B[31m vil du ændre lengthMinutes (yes or no):\u001B[0m ");
         String INPUT3 = scanner.nextLine();
         if (INPUT3.equalsIgnoreCase("yes")) {
-            System.out.println("hvad skal lengthMinutes ændres til");
-            movie.setLengthInMinutes(scanner.nextInt());
+            System.out.println("\u001B[31mhvad skal lengthMinutes ændres til\u001B[0m");
+            lengthInMinutes = scanner.nextInt();
+            scanner.nextLine();
         }
-        if (INPUT3.equalsIgnoreCase("no")){
-            System.out.println("lengthMinutes er uændret");
+        if (INPUT3.equalsIgnoreCase("no")) {
+            System.out.println("\u001B[31mlengthMinutes er uændret\u001B[0m");
         }
 
-        scanner.nextLine();
-        System.out.println("\u001B[34m vil du ændre genre (yes or no): ");
+
+        System.out.println("\u001B[31m vil du ændre genre (yes or no): \u001B[0m");
         String INPUT4 = scanner.nextLine();
         if (INPUT4.equalsIgnoreCase("yes")) {
-            System.out.println("hvad skal genre ændres til");
-            movie.setGenre(scanner.nextLine());
+            System.out.println("\u001B[31mhvad skal genre ændres til\u001B[0m");
+            genre = scanner.nextLine();
         }
-        if (INPUT4.equalsIgnoreCase("no")){
-            System.out.println("genre er uændret");
+        if (INPUT4.equalsIgnoreCase("no")) {
+            System.out.println("\u001B[31m genre er uændret\u001B[0m");
         }
+        controller.editMovie(movie, title, director, yearCreated, inColor, lengthInMinutes, genre);
+        System.out.println("\u001B[31mfilmen er ændret til :\u001B[0m ");
+        System.out.println("\u001B[34mtitle:\u001B[0m " + movie.getTitle() + " \u001B[34m director:\u001B[0m " + movie.getDirector() + " \u001B[34m year created:\u001B[0m " + movie.getYearCreated() + " \u001B[34m genre:\u001B[0m " + movie.getGenre() + " \u001B[34m length(minutes):\u001B[0m " + movie.getLengthInMinutes() + " \u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
 
-}
 
-public void delete() {
-    System.out.println("\u001B[31hvad vil du delete? ");
-    System.out.print(" skriv title> \u001B[0m");
-    String title = scanner.nextLine();
-    ArrayList<Movie> list = controller.getMovies();
-
-    if (list.isEmpty()) {
-        System.out.println("this movie not exist");
     }
-    int count = 0;
-    for (Movie movie : list) {
-        if (list.contains(controller.getMovies())) {
-            count++;
-            controller.deleteMovie(movie);
+
+    public void delete() {
+        System.out.println("\u001B[31mhvad vil du delete? ");
+        System.out.print(" skriv title> \u001B[0m");
+        String title = scanner.nextLine();
+        ArrayList<Movie> list = controller.searchMovies(title);
+        ArrayList<Movie>matchTitle = new ArrayList<>();
+for (Movie movie: list){
+    if (movie.getTitle().toLowerCase().contains(title.toLowerCase())){
+        matchTitle.add(movie);
+    }
+}
+        if (matchTitle.isEmpty()) {
+            System.out.println("\u001B[31mthis movie not exist\u001B[0m");
+        } else if (matchTitle.size() > 1) {
+            int count = 0;
+            for (int i = 0; i < matchTitle.size(); i++) {
+                Movie m = matchTitle.get(i);
+                System.out.println((i + 1) + "\u001B[31m :\u001B[0m " + m.getTitle() + "\u001B[31m som er fra\u001B[0m " + m.getYearCreated());
+            }
+            System.out.println("\u001B[31mhvilket af dem skal slettes\u001B[0m");
+            System.out.println("> ");
+            int nummer = scanner.nextInt();
+            if (nummer >= 1 && nummer <= matchTitle.size()) {
+                scanner.nextLine();
+               // controller.deleteMovie(list.get(nummer - 1));
+                //count++;
+                System.out.println("\u001B[31mvil du slette\u001B[0m "+matchTitle.get(nummer - 1).getTitle());
+                String answer = scanner.nextLine();
+                if (answer.equalsIgnoreCase("yes")) {
+                    controller.deleteMovie(matchTitle.get(nummer - 1));
+                    count++;
+                    System.out.println(matchTitle.get(nummer - 1).getTitle() + "\u001B[31m er blevet slettet \u001B[0m" + count + "\u001B[31m film.\u001B[0m");
+                    System.out.println("\u001B[31mder blevet slettet\u001B[0m " + count + " \u001B[31mfilm\u001B[0m");
+                }
+                else if (answer.equalsIgnoreCase("no")){
+                    System.out.println(matchTitle.get(nummer-1).getTitle()+"\u001B[31m blev ikke slettet\u001B[0m");
+                }
+            }
+        } else {
+            int count = 0;
+            //controller.deleteMovie(list.get(0));
+            System.out.println("\u001B[31mvil du slette \u001B[0m"+matchTitle.get(0).getTitle());
+            String answer = scanner.nextLine();
+            if (answer.equalsIgnoreCase("yes")) {
+                controller.deleteMovie(matchTitle.get(0));
+                count++;
+                System.out.println(matchTitle.get(0).getTitle() + "\u001B[31m er blevet slettet\u001B[0m");
+                System.out.println("\u001B[31mder blevet slettet " + count + " film\u001B[0m");
+            }
+            else if (answer.equalsIgnoreCase("no")){
+                System.out.println(matchTitle.get(0).getTitle()+" \u001B[31mblev ikke slettet\u001B[0m");
+            }
+
+
+           // System.out.println(list.get(0).getTitle() + " \u001B[31mer slettet\u001B[0m");
+            //System.out.println("\u001B[31mdet blevet slettet\u001B[0m " + count + "\u001B[31m film.\u001B[0m");
+
 
         }
-
-        System.out.println(movie.getTitle() + " \u001B[31er slettet\u001B[0m");
     }
-    System.out.println("det blevet slettet " + count + " film.");
 
-}
-
-public void markAsSeen() {
-    System.out.println("\u001B[31hvad har du set? ");
-    System.out.print(" skriv title> \u001B[0m");
-    String title = scanner.nextLine();
-    ArrayList<Movie> list = controller.getMovies();
-    if (list.isEmpty()) {
-        System.out.println("the movie not exist");
-    }
-    int count = 0;
-    for (Movie movie : list) {
-        if (title.equalsIgnoreCase(movie.getTitle())) {
-            ++count;
-            controller.markAsWatched(movie);
+    public void markAsSeen() {
+        System.out.println("\u001B[31mhvad har du set? ");
+        System.out.print(" skriv title> \u001B[0m");
+        String title = scanner.nextLine();
+        ArrayList<Movie> list = controller.getMovies();
+        if (list.isEmpty()) {
+            System.out.println("\u001B[31mthe movie not exist\u001B[0m");
         }
+        int count = 0;
+        for (Movie movie : list) {
+            if (title.equalsIgnoreCase(movie.getTitle())) {
+                ++count;
+                controller.markAsWatched(movie);
+            }
 
-        System.out.println(movie.getTitle() + "\u001B[31 er markeret\u001B[0m");
+            System.out.println(movie.getTitle() +"\u001B[31m fra\u001B[0m "+movie.getYearCreated()+" \u001B[31maf\u001B[0m "+movie.getDirector()+ "\u001B[31m er markeret som set\u001B[0m");
+        }
+        System.out.println("\u001B[31mdet blevet markeret \u001B[0m" + count + " \u001B[31mfilm.\u001B[0m");
+
     }
-    System.out.println("det blevet markeret " + count + " film.");
+public void lastWatched(){
+    System.out.println("\u001B[31m her kan du se listen over de film du ikke har set siden...");
+    System.out.println("hvor mange day  siden skal du undersøge?\u001B[0m");
+    int day = scanner.nextInt();
+
+    scanner.nextLine();
+    java.util.ArrayList<Movie>list = controller.getMoviesNotWatchedForDays(day);
+    if (list.isEmpty()){
+        System.out.println("\u001B[31mder blev fundet ingen film som du ikke har set\u001B[0m "+day+"\u001B[31m siden\u001B[0m");
+    }
+    else {
+        for (Movie movie : list){
+            System.out.println("\u001B[31m du har ikke set \u001B[0m"+movie.getTitle()+" \u001B[31mfor \u001B[0m" +day +" \u001B[31msiden.\u001B[0m");
+        }
+    }
 
 }
 
-public void showMovies() {
-    ArrayList<Movie> movies = controller.getMovies();
-    if (movies.isEmpty()) {
-        System.out.println("der er ingen film");
+
+    public void showMovies() {
+        ArrayList<Movie> movies = controller.getMovies();
+        if (movies.isEmpty()) {
+            System.out.println("\u001B[31mder er ingen film");
+        }
+        System.out.println("listen over alle film er: \u001B[0m");
+        for (Movie movie : movies) {
+
+            System.out.println("\u001B[34mtitle:\u001B[0m " + movie.getTitle() + " \u001B[34m director:\u001B[0m " + movie.getDirector() + " \u001B[34m year created:\u001B[0m " + movie.getYearCreated() + " \u001B[34m genre:\u001B[0m " + movie.getGenre() + " \u001B[34m length(minutes):\u001B[0m " + movie.getLengthInMinutes() + " \u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
+
+
+        }
     }
-    System.out.println("listen over alle film er: ");
-    for (Movie movie : movies) {
 
-        System.out.println("title: " + movie.getTitle() + " director: " + movie.getDirector() + " year created: " + movie.getYearCreated() + " genre: " + movie.getGenre() + " length(minutes): " + movie.getLengthInMinutes());
 
+    public void startProgram() {
+        menu();
+        printText("Farvel og tak!");
     }
-}
-
-
-public void startProgram() {
-    menu();
-    printText("Farvel og tak!");
-}
 }
