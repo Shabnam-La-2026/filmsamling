@@ -1,6 +1,6 @@
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -91,11 +91,12 @@ public class UserInterface {
         while (true) {
             try {
                 director = scanner.nextLine();
-                if (director.isEmpty()||director.matches("[-+]?\\d+")){
+                director = director.trim();
+                if (director.isEmpty() || director.matches("[-+]?\\d+") || director.matches("^\\.")) {
                     throw new IllegalArgumentException("\u001B[31mindput skal ikke være tom eller et tal\u001B[0m ");
                 }
                 break;
-            }catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
 
@@ -108,16 +109,14 @@ public class UserInterface {
             try {
                 yearCreated = scanner.nextInt();
                 scanner.nextLine();
-                if (yearCreated<1888 || yearCreated>2026 ) {
+                if (yearCreated < 1888 || yearCreated > 2026) {
                     throw new IllegalArgumentException("\u001B[31mugyldig årstal. indtast venligt et år meelem 1888 og 2026\u001B[0m");
                 }
                 break;
-            }
-            catch (InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("\u001B[31msvar med tal\u001B[0m");
                 scanner.nextLine();
-            }
-            catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
 
@@ -145,32 +144,31 @@ public class UserInterface {
 
         System.out.print("\u001B[34m lengthMinutes:\u001B[0m ");
         int lengthInMinutes;
-                while(true){
-                    try {
-                         lengthInMinutes= scanner.nextInt();
-                        scanner.nextLine();
-                        break;
-                    } catch (InputMismatchException  Exception ) {
-                        System.out.println("\u001B[31msvar med tal\u001B[0m ");
-                        scanner.nextLine();
-                    }
-                }
+        while (true) {
+            try {
+                lengthInMinutes = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } catch (InputMismatchException Exception) {
+                System.out.println("\u001B[31msvar med tal\u001B[0m ");
+                scanner.nextLine();
+            }
+        }
 
 
         System.out.print("\u001B[34mgenre:\u001B[0m ");
         String genre;
         while (true)
             try {
-                genre= scanner.nextLine();
-                if (genre.isEmpty() || genre.matches("[+-]?\\d+")){
+                genre = scanner.nextLine();
+                if (genre.isEmpty() || genre.matches("[+-]?\\d+")) {
                     throw new IllegalArgumentException("\u001B[31mindput skal ikke være tom eller et tal\u001B[0m ");
                 }
                 break;
-            }
-        catch (IllegalArgumentException e){
-            System.out.println(e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
 
-        }
+            }
 
 
         boolean exist = false;
@@ -220,9 +218,9 @@ public class UserInterface {
         ArrayList<Movie> list = controller.searchMovies(serchText);
         if (list.isEmpty()) {
             System.out.println("\u001B[31m der findes ikke filmen med dette title\u001B[0m");
-        }else if (list.size()==1){
+        } else if (list.size() == 1) {
             edit(list.get(0));
-        }else {
+        } else {
             for (int i = 0; i < list.size(); i++) {
                 Movie m = list.get(i);
                 System.out.println((i + 1) + " : " + m.getTitle() + " som er fra " + m.getYearCreated());
@@ -238,10 +236,9 @@ public class UserInterface {
                         scanner.nextLine();
                         edit(list.get(nummer - 1));
                         break;
-                    }
-                 else {
+                    } else {
 
-                        System.out.println("vælge et nummer mellem 1 og "+ list.size());
+                        System.out.println("vælge et nummer mellem 1 og " + list.size());
                     }
 
                 } catch (InputMismatchException e) {
@@ -262,78 +259,203 @@ public class UserInterface {
         int lengthInMinutes = movie.getLengthInMinutes();
         String genre = movie.getGenre();
 
-        System.out.println("\u001B[31m vil du ændre title (yes or no): \u001B[0m");
-        String INPUT = scanner.nextLine();
-        if (INPUT.equalsIgnoreCase("yes")) {
-            System.out.println("\u001B[31mhvad skal title ændres til \u001B[0m");
-            title = scanner.nextLine();
-        }
-        if (INPUT.equalsIgnoreCase("no")) {
-            System.out.println("\u001B[31mtitle er uændret \u001B[0m");
-        }
-        System.out.println("\u001B[31m vil du ændre dirctor (yes or no): ");
-        String INPUT1 = scanner.nextLine();
-        if (INPUT1.equalsIgnoreCase("yes")) {
-            System.out.println("\u001B[31m hvad skal dirctor ændres til\u001B[0m");
-            director = scanner.nextLine();
-        }
-        if (INPUT1.equalsIgnoreCase("no")) {
-            System.out.println("\u001B[31m dirctor er uændret\u001B[0m");
-        }
-        System.out.println("\u001B[31m vil du ændre yearCreated (yes or no): \u001B[0m");
-        String INPUT2 = scanner.nextLine();
-        if (INPUT2.equalsIgnoreCase("yes")) {
-            System.out.println("\u001B[31mhvad skal yearCreated ændres til\u001B[0m");
-            yearCreated = scanner.nextInt();
-            scanner.nextLine();
-        }
-        if (INPUT2.equalsIgnoreCase("no")) {
-            System.out.println("\u001B[31myearCreated er uændret\u001B[0m");
-        }
+        System.out.println("\u001B[31m vil du ændre title (yes or no): ");
+        while (true) {
+            String INPUT = scanner.nextLine();
+            if (INPUT.equalsIgnoreCase("yes")) {
+                System.out.println("\u001B[31m hvad skal title ændres til\u001B[0m");
+                while (true) {
+                    try {
+                        System.out.print("\u001B[34mTitel:\u001B[0m ");
+                        title = scanner.nextLine();
 
-        do {
+                        if (title.isEmpty() || title.matches("[-+]?\\d+")) {
+                            throw new IllegalArgumentException("\u001B[31mindput skal ikke være tom eller et tal\u001B[0m");
+                        }
+                        break;
 
-            System.out.println("\u001B[31m vil du ændre inColor (yes or no):\u001B[0m ");
-            String INPUt = scanner.nextLine();
-            if (INPUt.equalsIgnoreCase("yes")) {
-                System.out.println("\u001B[31m hvad skal inColor ændres til\u001B[0m");
-                String input = scanner.nextLine();
-                if (input.equalsIgnoreCase("yes")) {
-                    inColor = true;
-                    break;
-                } else if (input.equalsIgnoreCase("no")) {
-                    inColor = false;
-                    break;
+                    } catch (IllegalArgumentException exception) {
+                        System.out.println(exception.getMessage());
+
+                    }
                 }
+                break;
+
+            } else if (INPUT.equalsIgnoreCase("no")) {
+                System.out.println("\u001B[31m title er uændret\u001B[0m");
+                break;
+            } else {
+                System.out.println("svar med yes eller no");
+            }
+        }
 
 
-            } else if (INPUt.equalsIgnoreCase("no")) {
-                System.out.println("\u001B[31minColor er uændtet\u001B[0m");
+//        boolean changeTitle = yesNoQuestion("\u001B[31m vil du ændre title (yes or no): \u001B[0m");
+//
+//        if (changeTitle) {
+//
+//                System.out.println("\u001B[31mhvad skal title ændres til \u001B[0m");
+//
+//                title = scanner.nextLine();
+//
+//            }
+//        else{
+//                System.out.println("\u001B[31mtitle er uændret \u001B[0m");
+//            }
+
+
+        System.out.println("\u001B[31m vil du ændre dirctor (yes or no): ");
+        while (true) {
+            String INPUT = scanner.nextLine();
+            if (INPUT.equalsIgnoreCase("yes")) {
+                System.out.println("\u001B[31m hvad skal dirctor ændres til\u001B[0m");
+                while (true) {
+                    try {
+                        System.out.print("\u001B[34mdirctor:\u001B[0m ");
+                        director = scanner.nextLine();
+
+                        if (director.isEmpty() || director.matches("[-+]?\\d+")) {
+                            throw new IllegalArgumentException("\u001B[31mindput skal ikke være tom eller et tal\u001B[0m");
+                        }
+                        break;
+
+                    } catch (IllegalArgumentException exception) {
+                        System.out.println(exception.getMessage());
+
+                    }
+                }
                 break;
             }
-        } while (true);
+            if (INPUT.equalsIgnoreCase("no")) {
+                System.out.println("\u001B[31m dirctor er uændret\u001B[0m");
+                break;
+            } else {
+                System.out.println("svar med yea eller no");
+            }
+        }
+        System.out.println("\u001B[31m vil du ændre yearCreated (yes or no): \u001B[0m");
+        while (true) {
+            String INPUT = scanner.nextLine();
+            if (INPUT.equalsIgnoreCase("yes")) {
+                System.out.println("\u001B[31mhvad skal yearCreated ændres til\u001B[0m");
+                //yearCreated = scanner.nextInt();
+                // scanner.nextLine();
+                while (true) {
+                    try {
+                        yearCreated = scanner.nextInt();
+                        scanner.nextLine();
+                        if (yearCreated < 1888 || yearCreated > 2026) {
+                            throw new IllegalArgumentException("\u001B[31mugyldig årstal. indtast venligt et år meelem 1888 og 2026\u001B[0m");
+                        }
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println("\u001B[31msvar med tal\u001B[0m");
+                        scanner.nextLine();
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                }
+                break;
+            }
+            if (INPUT.equalsIgnoreCase("no")) {
+                System.out.println("\u001B[31myearCreated er uændret\u001B[0m");
+                break;
+            } else {
+                System.out.println("svar med yes eller no");
+            }
+        }
+        while (true) {
+
+            System.out.println("\u001B[31m vil du ændre inColor (yes or no):\u001B[0m ");
+            String INPUT = scanner.nextLine();
+
+            if (INPUT.equalsIgnoreCase("yes")) {
+
+                while (true) {
+                    try {
+                        System.out.println("\u001B[31m hvad skal inColor ændres til\u001B[0m");
+                        String input = scanner.nextLine();
+                        if (input.equalsIgnoreCase("yes")) {
+                            inColor = true;
+                            break;
+                        } else if (input.equalsIgnoreCase("no")) {
+                            inColor = false;
+                            break;
+                        } else {
+                            throw new IllegalArgumentException("svar med yes eller no");
+                        }
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                break;
+
+            } else if (INPUT.equalsIgnoreCase("no")) {
+                System.out.println("\u001B[31minColor er uændtet\u001B[0m");
+                break;
+            } else {
+                System.out.println("svar med yes eller no");
+            }
+        }
 
 
         System.out.println("\u001B[31m vil du ændre lengthMinutes (yes or no):\u001B[0m ");
-        String INPUT3 = scanner.nextLine();
-        if (INPUT3.equalsIgnoreCase("yes")) {
-            System.out.println("\u001B[31mhvad skal lengthMinutes ændres til\u001B[0m");
-            lengthInMinutes = scanner.nextInt();
-            scanner.nextLine();
-        }
-        if (INPUT3.equalsIgnoreCase("no")) {
-            System.out.println("\u001B[31mlengthMinutes er uændret\u001B[0m");
+        while (true) {
+            String INPUT = scanner.nextLine();
+            if (INPUT.equalsIgnoreCase("yes")) {
+                System.out.println("\u001B[31mhvad skal lengthMinutes ændres til\u001B[0m");
+//
+                while (true) {
+                    try {
+                        lengthInMinutes = scanner.nextInt();
+                        scanner.nextLine();
+                        break;
+                    } catch (InputMismatchException Exception) {
+                        System.out.println("\u001B[31msvar med tal\u001B[0m ");
+                        scanner.nextLine();
+                    }
+                }
+                break;
+            }
+            if (INPUT.equalsIgnoreCase("no")) {
+                System.out.println("\u001B[31mlengthMinutes er uændret\u001B[0m");
+                break;
+            } else {
+                System.out.println("svar med yes eller no");
+            }
         }
 
 
         System.out.println("\u001B[31m vil du ændre genre (yes or no): \u001B[0m");
-        String INPUT4 = scanner.nextLine();
-        if (INPUT4.equalsIgnoreCase("yes")) {
-            System.out.println("\u001B[31mhvad skal genre ændres til\u001B[0m");
-            genre = scanner.nextLine();
-        }
-        if (INPUT4.equalsIgnoreCase("no")) {
-            System.out.println("\u001B[31m genre er uændret\u001B[0m");
+        while (true) {
+            String INPUT = scanner.nextLine();
+            if (INPUT.equalsIgnoreCase("yes")) {
+                System.out.println("\u001B[31mhvad skal genre ændres til\u001B[0m");
+                while (true) {
+                    try {
+                        System.out.print("\u001B[34mgenre:\u001B[0m ");
+                        genre = scanner.nextLine();
+
+                        if (genre.isEmpty() || genre.matches("[-+]?\\d+")) {
+                            throw new IllegalArgumentException("\u001B[31mindput skal ikke være tom eller et tal\u001B[0m");
+                        }
+                        break;
+
+                    } catch (IllegalArgumentException exception) {
+                        System.out.println(exception.getMessage());
+
+                    }
+                }
+                break;
+
+            }
+            if (INPUT.equalsIgnoreCase("no")) {
+                System.out.println("\u001B[31m genre er uændret\u001B[0m");
+                break;
+            } else {
+                System.out.println("svar med yes eller no");
+            }
         }
         controller.editMovie(movie, title, director, yearCreated, inColor, lengthInMinutes, genre);
         System.out.println("\u001B[31mfilmen er ændret til :\u001B[0m ");
@@ -341,6 +463,22 @@ public class UserInterface {
 
 
     }
+
+//    private boolean yesNoQuestion(String question) {
+//        do {
+//            System.out.println(question);
+//            String INPUt = scanner.nextLine();
+//
+//            if (INPUt.equalsIgnoreCase("yes")) {
+//                return true;
+//            } else if (INPUt.equalsIgnoreCase("no")) {
+//                return false;
+//            } else {
+//                System.out.println("svar med yes eller no");
+//            }
+//        }
+//        while (true);
+//    }
 
     public void delete() {
         System.out.println("\u001B[31mhvad vil du delete? ");
@@ -352,54 +490,88 @@ public class UserInterface {
             if (movie.getTitle().toLowerCase().contains(title.toLowerCase())) {
                 matchTitle.add(movie);
             }
+
         }
+
         if (matchTitle.isEmpty()) {
             System.out.println("\u001B[31mthis movie not exist\u001B[0m");
-        } else if (matchTitle.size() > 1) {
-            int count = 0;
+        }
+        int count = 0;
+
+        if (matchTitle.size() > 1) {
+
             for (int i = 0; i < matchTitle.size(); i++) {
                 Movie m = matchTitle.get(i);
                 System.out.println((i + 1) + "\u001B[31m :\u001B[0m " + m.getTitle() + "\u001B[31m som er fra\u001B[0m " + m.getYearCreated());
             }
-            System.out.println("\u001B[31mhvilket af dem skal slettes\u001B[0m");
-            System.out.println("> ");
-            int nummer = scanner.nextInt();
-            if (nummer >= 1 && nummer <= matchTitle.size()) {
-                scanner.nextLine();
-                // controller.deleteMovie(list.get(nummer - 1));
-                //count++;
-                System.out.println("\u001B[31mvil du slette\u001B[0m " + matchTitle.get(nummer - 1).getTitle());
-                String answer = scanner.nextLine();
+            int nummer;
+            while (true) {
+                try {
+                    System.out.println("\u001B[31mhvilket af dem skal slettes\u001B[0m");
+                    System.out.println("> ");
+                    nummer = scanner.nextInt();
+                    scanner.nextLine();
+                    if (nummer >= 1 && nummer <= matchTitle.size()) {
+                        break;
+
+                    } else {
+                        System.out.println("vælge et gyldig nummer mellem 1 og " + matchTitle.size());
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("du skal indtaste et tal");
+                    scanner.nextLine();
+                }
+            }
+            String answer;
+            Movie choosedMovie = matchTitle.get(nummer - 1);
+            while (true) {
+
+                System.out.println("\u001B[31mvil du slette\u001B[0m " + choosedMovie.getTitle());
+                answer = scanner.nextLine();
                 if (answer.equalsIgnoreCase("yes")) {
-                    controller.deleteMovie(matchTitle.get(nummer - 1));
+                    controller.deleteMovie(choosedMovie);
                     count++;
-                    System.out.println(matchTitle.get(nummer - 1).getTitle() + "\u001B[31m er blevet slettet \u001B[0m" + count + "\u001B[31m film.\u001B[0m");
+                    System.out.println(choosedMovie.getTitle() + "\u001B[31m er blevet slettet \u001B[0m" + count + "\u001B[31m film.\u001B[0m");
                     System.out.println("\u001B[31mder blevet slettet\u001B[0m " + count + " \u001B[31mfilm\u001B[0m");
+                    break;
                 } else if (answer.equalsIgnoreCase("no")) {
-                    System.out.println(matchTitle.get(nummer - 1).getTitle() + "\u001B[31m blev ikke slettet\u001B[0m");
+                    System.out.println(choosedMovie.getTitle() + "\u001B[31m blev ikke slettet\u001B[0m");
+                    break;
+                } else {
+                    System.out.println("svar med yes eller no");
                 }
             }
         } else {
-            int count = 0;
-            //controller.deleteMovie(list.get(0));
-            System.out.println("\u001B[31mvil du slette \u001B[0m" + matchTitle.get(0).getTitle());
-            String answer = scanner.nextLine();
-            if (answer.equalsIgnoreCase("yes")) {
-                controller.deleteMovie(matchTitle.get(0));
-                count++;
-                System.out.println(matchTitle.get(0).getTitle() + "\u001B[31m er blevet slettet\u001B[0m");
-                System.out.println("\u001B[31mder blevet slettet " + count + " film\u001B[0m");
-            } else if (answer.equalsIgnoreCase("no")) {
-                System.out.println(matchTitle.get(0).getTitle() + " \u001B[31mblev ikke slettet\u001B[0m");
+
+            String answer;
+            Movie choosedMovie = matchTitle.get(0);
+
+            while (true) {
+
+
+                //controller.deleteMovie(list.get(0));
+                System.out.println("\u001B[31mvil du slette \u001B[0m" + choosedMovie.getTitle());
+                answer = scanner.nextLine();
+                if (answer.equalsIgnoreCase("yes")) {
+                    controller.deleteMovie(choosedMovie);
+                    count++;
+                    System.out.println(choosedMovie.getTitle() + "\u001B[31m er blevet slettet\u001B[0m");
+                    System.out.println("\u001B[31mder blevet slettet " + count + " film\u001B[0m");
+                    break;
+                } else if (answer.equalsIgnoreCase("no")) {
+                    System.out.println(choosedMovie.getTitle() + " \u001B[31mblev ikke slettet\u001B[0m");
+                    break;
+                } else {
+                    System.out.println("svar med yes eller no");
+                }
+
             }
-
-
-            // System.out.println(list.get(0).getTitle() + " \u001B[31mer slettet\u001B[0m");
-            //System.out.println("\u001B[31mdet blevet slettet\u001B[0m " + count + "\u001B[31m film.\u001B[0m");
-
-
         }
     }
+
+    // System.out.println(list.get(0).getTitle() + " \u001B[31mer slettet\u001B[0m");
+    //System.out.println("\u001B[31mdet blevet slettet\u001B[0m " + count + "\u001B[31m film.\u001B[0m");
+
 
     public void markAsSeen() {
         System.out.println("\u001B[31mhvad har du set? ");
@@ -425,9 +597,17 @@ public class UserInterface {
     public void lastWatched() {
         System.out.println("\u001B[31m her kan du se listen over de film du ikke har set siden...");
         System.out.println("hvor mange day  siden skal du undersøge?\u001B[0m");
-        int day = scanner.nextInt();
-
-        scanner.nextLine();
+        int day;
+        while (true) {
+            try {
+                day = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("vælge et tal");
+                scanner.nextLine();
+            }
+        }
         java.util.ArrayList<Movie> list = controller.getMoviesNotWatchedForDays(day);
         if (list.isEmpty()) {
             System.out.println("\u001B[31mder blev fundet ingen film som du ikke har set\u001B[0m " + day + "\u001B[31m siden\u001B[0m");
@@ -441,24 +621,32 @@ public class UserInterface {
 
 
     public void showMovies() {
+
         ArrayList<Movie> movies = controller.getMovies();
+
         if (movies.isEmpty()) {
             System.out.println("\u001B[31mder er ingen film");
-        }
-        System.out.println("listen over alle film er: \u001B[0m");
-        for (Movie movie : movies) {
 
-            System.out.println("\u001B[34mtitle:\u001B[0m " + movie.getTitle() + " \u001B[34m director:\u001B[0m " + movie.getDirector() + " \u001B[34m year created:\u001B[0m " + movie.getYearCreated() + " \u001B[34m genre:\u001B[0m " + movie.getGenre() + " \u001B[34m length(minutes):\u001B[0m " + movie.getLengthInMinutes() + " \u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
+        } else {
+            System.out.println("listen over alle film er: \u001B[0m");
 
 
+            for (Movie movie : movies) {
+
+                System.out.println("\u001B[34mtitle:\u001B[0m " + movie.getTitle() + " \u001B[34m director:\u001B[0m " + movie.getDirector() + " \u001B[34m year created:\u001B[0m " + movie.getYearCreated() + " \u001B[34m genre:\u001B[0m " + movie.getGenre() + " \u001B[34m length(minutes):\u001B[0m " + movie.getLengthInMinutes() + " \u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
+
+
+            }
         }
     }
 
 
-    public void startProgram() {
+    public void startProgram() throws FileNotFoundException {
+        controller.readFile();
         System.out.println("----- MENU-----");
-
         menu();
+        controller.saveMovies();
+
         printText("Farvel og tak!");
     }
 }
