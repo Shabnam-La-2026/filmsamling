@@ -2,6 +2,10 @@ package domainmodel;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
+
+
 
 public class MovieCollection {
     private ArrayList<Movie> movies;
@@ -84,4 +88,19 @@ public class MovieCollection {
         return list;
 
     }
+
+    public  ArrayList<Movie>getMovieSorted(Comparable<Movie> comparable){
+        ArrayList<Movie> sorted = new ArrayList<>(movies);
+        Collections.sort(sorted);
+        return sorted;
+    }
+    public ArrayList<Movie> getMoviesSorted(Comparator<Movie> comparator) {
+        ArrayList<Movie> sorted = new ArrayList<>(movies);
+        sorted.sort(comparator);
+        return sorted;
+    }
+
+    //getMoviesSortedByTitle() : ArrayList<Movie>
+    //
+    //+getMoviesSorted(Comparator<Movie> comparator) : ArrayList<Movie>
 }
