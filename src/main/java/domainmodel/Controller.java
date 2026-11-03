@@ -1,7 +1,10 @@
+package domainmodel;
+
+import datasource.FileHandler;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Controller {
     private MovieCollection movieCollection;
@@ -52,8 +55,9 @@ public class Controller {
     public boolean saveMovies() throws FileNotFoundException {
         return fileHandler.saveMoviesToFile(movieCollection);
     }
-    public void readFile () throws FileNotFoundException {
-         movieCollection=fileHandler.readMovieFromFile();
+
+    public void readFile() throws FileNotFoundException {
+        movieCollection = fileHandler.readMovieFromFile();
     }
 
 

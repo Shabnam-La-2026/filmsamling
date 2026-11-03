@@ -1,3 +1,8 @@
+package brugerflade;
+
+import domainmodel.Controller;
+import domainmodel.Movie;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;

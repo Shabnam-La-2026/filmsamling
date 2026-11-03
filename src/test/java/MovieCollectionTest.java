@@ -1,18 +1,27 @@
+import domainmodel.Movie;
+import domainmodel.MovieCollection;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 
 public class MovieCollectionTest {
     private MovieCollection collection;
 
     @Test
-    void addMovie() {
+    void emptyMovieCollection() {
 
         MovieCollection col = new MovieCollection();
         assertEquals(0, col.getNumberOfMovies());
+    }
+
+    @Test
+    void addMovie() {
+
+        MovieCollection col = new MovieCollection();
         col.addMovie("Test movie", "Hans", 1987, false, 120, "Drama");
         assertEquals(1, col.getNumberOfMovies());
 
@@ -20,14 +29,15 @@ public class MovieCollectionTest {
 
         assertEquals("Test movie", list.get(0).getTitle());
     }
+
     @Test
-    void editMovie(){
+    void editMovie() {
         MovieCollection col = new MovieCollection();
         col.addMovie("Test movie", "Hans", 1987, false, 120, "Drama");
 
-        //for (Movie movie1 : col.getMovies())
+        //for (domainmodel.Movie movie1 : col.getMovies())
         ArrayList<Movie> list = col.getMovies();
-        col.editMovie(list.get(0),"new title", "hans", 1987,false , 120 ,"Drama");
+        col.editMovie(list.get(0), "new title", "hans", 1987, false, 120, "Drama");
 
         assertEquals("new title", list.get(0).getTitle());
     }
@@ -44,7 +54,7 @@ public class MovieCollectionTest {
 
     @Test
     void searchWithSeveralMatches() {
-        //MovieCollection collection = new MovieCollection();
+        //domainmodel.MovieCollection collection = new domainmodel.MovieCollection();
         // "god" findes i både "The Godfather" og "Godzilla"
         ArrayList<Movie> result = collection.searchMovies("god");
 
@@ -53,7 +63,7 @@ public class MovieCollectionTest {
 
     @Test
     void deleteMovieRemovesIt() {
-        //MovieCollection collection = new MovieCollection();
+        //domainmodel.MovieCollection collection = new domainmodel.MovieCollection();
         // Arrange
         Movie casablanca = collection.searchMovies("Casablanca").get(0);
 

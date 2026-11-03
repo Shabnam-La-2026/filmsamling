@@ -1,6 +1,7 @@
+package domainmodel;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class MovieCollection {
     private ArrayList<Movie> movies;
@@ -62,7 +63,7 @@ public class MovieCollection {
         return true;
     }
 
-    //        for (Movie movie1 : movies ){
+    //        for (domainmodel.Movie movie1 : movies ){
 //          if (!(movie1 == null) && movie==movie1){
 //
 //              movies.remove(movie);
@@ -71,7 +72,7 @@ public class MovieCollection {
 //      }
 //      return false;
 //    }
-    // getMoviesNotWatchedSince(LocalDate date) : ArrayList<Movie>
+    // getMoviesNotWatchedSince(LocalDate date) : ArrayList<domainmodel.Movie>
     public ArrayList<Movie> getMoviesNotWatchedSince(LocalDate date) {
       ArrayList<Movie>list = new ArrayList<>();
         for (Movie movie : movies) {

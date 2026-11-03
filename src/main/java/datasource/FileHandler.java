@@ -1,3 +1,8 @@
+package datasource;
+
+import domainmodel.Movie;
+import domainmodel.MovieCollection;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;

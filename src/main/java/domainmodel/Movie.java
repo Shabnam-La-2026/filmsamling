@@ -1,8 +1,7 @@
+package domainmodel;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.time.temporal.ChronoUnit;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 
 public class Movie {
@@ -29,9 +28,8 @@ public class Movie {
         return title;
     }
 
-    public boolean getIsInColor()
-    {
-    return inColor;
+    public boolean getIsInColor() {
+        return inColor;
     }
 
     public String getDirector() {
