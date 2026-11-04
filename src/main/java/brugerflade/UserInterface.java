@@ -107,10 +107,11 @@ public class UserInterface {
                 for (Movie movie : sortedMovies2){
                     System.out.println(movie.getDirector());
 
-                    System.out.println("\u001B[34mtitle:\u001B[0m " + movie.getTitle() +
-                            " \u001B[34m year created:\u001B[0m " + movie.getYearCreated() +
-                            " \u001B[34m genre:\u001B[0m " + movie.getGenre() + " \u001B[34m length(minutes):\u001B[0m "
-                            + movie.getLengthInMinutes() + " \u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
+                    System.out.println("\n\u001B[34mDirector:\u001B[0m " + movie.getDirector() +
+                            "\n\u001B[34mtitle:\u001B[0m " + movie.getTitle() +
+                            " \n\u001B[34m year created:\u001B[0m " + movie.getYearCreated() +
+                            " \n\u001B[34m genre:\u001B[0m " + movie.getGenre() + " \n\u001B[34m length(minutes):\u001B[0m "
+                            + movie.getLengthInMinutes() + " \n\u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
                     System.out.println();
                 }
                 break;
