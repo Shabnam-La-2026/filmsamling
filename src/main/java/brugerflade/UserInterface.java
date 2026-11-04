@@ -88,18 +88,19 @@ public class UserInterface {
 
         SortField field;
 
+        System.out.print(">");
         int choice = Integer.parseInt(scanner.nextLine());
 
         switch (choice) {
             case 1:
                 ArrayList<Movie> sortedMovies = controller.getMoviesSortedBy(SortField.TITLE);
                 for (Movie movie : sortedMovies){
-                    System.out.println("\u001B[34mTitle:\u001B[0m "+ movie.getTitle() +
-                            "\n\u001B[34mDirector:\u001B[0m "+
+                    System.out.println(movie.getTitle());
+                    System.out.print("\u001B[34mDirector:\u001B[0m "+
                             movie.getDirector() + " \n\u001B[34m year created:\u001B[0m " + movie.getYearCreated() +
                             " \n\u001B[34m genre:\u001B[0m " + movie.getGenre() + " \n\u001B[34m length(minutes):\u001B[0m "
                             + movie.getLengthInMinutes() + " \n\u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
-                    System.out.println();
+                    System.out.println("\n");
                 }
                 break;
             case 2:
@@ -107,44 +108,44 @@ public class UserInterface {
                 for (Movie movie : sortedMovies2){
                     System.out.println(movie.getDirector());
 
-                    System.out.println("\n\u001B[34mDirector:\u001B[0m " + movie.getDirector() +
-                            "\n\u001B[34mtitle:\u001B[0m " + movie.getTitle() +
+                    System.out.println("\u001B[34mtitle:\u001B[0m " + movie.getTitle() +
                             " \n\u001B[34m year created:\u001B[0m " + movie.getYearCreated() +
                             " \n\u001B[34m genre:\u001B[0m " + movie.getGenre() + " \n\u001B[34m length(minutes):\u001B[0m "
                             + movie.getLengthInMinutes() + " \n\u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
-                    System.out.println();
+                    System.out.println("\n");
                 }
                 break;
             case 3:
                 ArrayList<Movie> sortedMovies3 = controller.getMoviesSortedBy(SortField.YEAR);
                 for (Movie movie : sortedMovies3){
                     System.out.println(movie.getYearCreated());
-                    System.out.println("\u001B[34mtitle:\u001B[0m " + movie.getTitle() + "\u001B[34mDirector:\u001B[0m "+
-                            movie.getDirector() + " \u001B[34m genre:\u001B[0m " + movie.getGenre() + " \u001B[34m length(minutes):\u001B[0m "
-                            + movie.getLengthInMinutes() + " \u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
-                    System.out.println();
+                    System.out.println("\n\u001B[34mtitle:\u001B[0m " + movie.getTitle() + "\n \u001B[34mDirector:\u001B[0m "+
+                            movie.getDirector() + " \n\u001B[34m genre:\u001B[0m " + movie.getGenre() + " \n\u001B[34m length(minutes):\u001B[0m "
+                            + movie.getLengthInMinutes() + " \n\u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
+                    System.out.println("\n");
                 }
 
                 break;
             case 4:
                 ArrayList<Movie> sortedMovies4 = controller.getMoviesSortedBy(SortField.LENGTH);
                 for (Movie movie : sortedMovies4){
-                    System.out.println(movie.getLengthInMinutes());
+                    System.out.print(movie.getLengthInMinutes() + " Minutes");
+                    System.out.println(" \n\u001B[34m year created:\u001B[0m " + movie.getYearCreated() + " \n \u001B[34mtitle:\u001B[0m " + movie.getTitle() + " \n \u001B[34mDirector:\u001B[0m "+
+                            movie.getDirector() + " \n\u001B[34m genre:\u001B[0m " + movie.getGenre()  + " \n\u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
 
-                    System.out.println("\u001B[34mtitle:\u001B[0m " + movie.getTitle() + "\u001B[34mDirector:\u001B[0m "+
-                            movie.getDirector() + " \u001B[34m genre:\u001B[0m " + movie.getGenre()  + " \u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
-
-                    System.out.println();
+                    System.out.println("\n");
                 }
 
                 break;
             case 5:
                 ArrayList<Movie> sortedMovies5 = controller.getMoviesSortedBy(SortField.GENRE);
                 for (Movie movie : sortedMovies5){
-                    System.out.println(movie.getGenre());
-                    System.out.println("\u001B[34mtitle:\u001B[0m " + movie.getTitle() + "\u001B[34mDirector:\u001B[0m "+
-                            movie.getDirector() + " \u001B[34m length(minutes):\u001B[0m "
-                            + movie.getLengthInMinutes() + " \u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
+                    System.out.print(movie.getGenre());
+                    System.out.println(" \n\u001B[34mtitle:\u001B[0m " + movie.getTitle() + "\n \u001B[34mDirector:\u001B[0m "+
+                            " \n\u001B[34m year created:\u001B[0m " + movie.getYearCreated() +
+                            movie.getDirector() + " \n\u001B[34m length(minutes):\u001B[0m "
+                            + movie.getLengthInMinutes() + " \n\u001B[34m inColor er:\u001B[0m " + movie.getIsInColor());
+                    System.out.println("\n");
 
                 }
                 break;
