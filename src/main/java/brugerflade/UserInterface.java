@@ -83,30 +83,45 @@ public class UserInterface {
         System.out.println("1. Titel");
         System.out.println("2. Instruktør");
         System.out.println("3. År");
-
-        int choice = scanner.nextInt();
+        System.out.println("4. Længde");
+        System.out.println("5. Genre");
 
         SortField field;
 
+        int choice = Integer.parseInt(scanner.nextLine());
+
         switch (choice) {
             case 1:
-                field = SortField.TITLE;
+                ArrayList<Movie> sortedMovies = controller.getMoviesSortedBy(SortField.TITLE);
+                for (Movie movies : sortedMovies){
+                    System.out.println(movies.getTitle());
+                }
                 break;
             case 2:
-                field = SortField.DIRECTOR;
+                ArrayList<Movie> sortedMovies2 = controller.getMoviesSortedBy(SortField.DIRECTOR);
+                for (Movie movies : sortedMovies2){
+                    System.out.println(movies.getDirector());
+                }
                 break;
             case 3:
-                field = SortField.YEAR;
+                ArrayList<Movie> sortedMovies3 = controller.getMoviesSortedBy(SortField.YEAR);
+                for (Movie movies : sortedMovies3){
+                    System.out.println(movies.getYearCreated());
+                    System.out.println("Instruktør: ");
+                }
                 break;
             case 4:
-                field = SortField.LENGTH;
+                ArrayList<Movie> sortedMovies4 = controller.getMoviesSortedBy(SortField.LENGTH);
+                for (Movie movies : sortedMovies4){
+                    System.out.println(movies.getLengthInMinutes());
+                }
                 break;
             case 5:
-                field = SortField.GENRE;
+                ArrayList<Movie> sortedMovies5 = controller.getMoviesSortedBy(SortField.GENRE);
+                for (Movie movies : sortedMovies5){
+                    System.out.println(movies.getGenre());
+                }
                 break;
-            default:
-                System.out.println("Ugyldigt valg");
-                return;
         }
     }
 
