@@ -35,6 +35,7 @@ public class UserInterface {
             printText("6. listen over alle film");
             printText("7. listen over film du ikke har set ");
             printText("8. Afslut program.");
+            printText("9. Vis film sorteret");
 
             System.out.print(">");
 
@@ -64,12 +65,43 @@ public class UserInterface {
                 case "8":
                     exit = true;
                     break;
+                case "9":
+
                 default:
                     printText("Invalid input: " + input);
                     break;
             }
 
         }
+    }
+
+    public void sortByPropertiesMenu(){
+
+        System.out.println("1. Sorteret efter title");
+        System.out.println("2. Sorteret efter direktør");
+        System.out.println("3. Sorteret efter genre");
+        System.out.println("4. sorteret efter længde");
+        System.out.println("5. Sorteret efter året filmen udkom");
+
+        String input = scanner.nextLine();
+
+        switch (input){
+            case "1":
+                break;
+
+            case "2":
+                break;
+
+            case "3":
+                break;
+
+            case "4":
+                break;
+
+            case "5":
+                break;
+        }
+
     }
 
     public void create() {
