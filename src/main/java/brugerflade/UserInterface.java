@@ -2,6 +2,7 @@ package brugerflade;
 
 import domainmodel.Controller;
 import domainmodel.Movie;
+import domainmodel.SortField;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -66,7 +67,8 @@ public class UserInterface {
                     exit = true;
                     break;
                 case "9":
-
+                    sortByPropertiesMenu();
+                    break;
                 default:
                     printText("Invalid input: " + input);
                     break;
@@ -77,32 +79,37 @@ public class UserInterface {
 
     public void sortByPropertiesMenu(){
 
-        System.out.println("1. Sorteret efter title");
-        System.out.println("2. Sorteret efter direktør");
-        System.out.println("3. Sorteret efter genre");
-        System.out.println("4. sorteret efter længde");
-        System.out.println("5. Sorteret efter året filmen udkom");
+        System.out.println("Sortér efter:");
+        System.out.println("1. Titel");
+        System.out.println("2. Instruktør");
+        System.out.println("3. År");
 
-        String input = scanner.nextLine();
+        int choice = scanner.nextInt();
 
-        switch (input){
-            case "1":
+        SortField field;
+
+        switch (choice) {
+            case 1:
+                field = SortField.TITLE;
                 break;
-
-            case "2":
+            case 2:
+                field = SortField.DIRECTOR;
                 break;
-
-            case "3":
+            case 3:
+                field = SortField.YEAR;
                 break;
-
-            case "4":
+            case 4:
+                field = SortField.LENGTH;
                 break;
-
-            case "5":
+            case 5:
+                field = SortField.GENRE;
                 break;
+            default:
+                System.out.println("Ugyldigt valg");
+                return;
         }
-
     }
+
 
     public void create() {
         System.out.println("\u001B[31mhvad vil du operate?\u001B[0m");
