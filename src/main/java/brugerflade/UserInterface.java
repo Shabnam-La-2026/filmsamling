@@ -662,20 +662,89 @@ public class UserInterface {
         System.out.print(" skriv title> \u001B[0m");
         String title = scanner.nextLine();
         ArrayList<Movie> list = controller.getMovies();
-        if (list.isEmpty()) {
+        ArrayList<Movie> matchTitle = new ArrayList<>();
+        for (Movie movie : list){
+            if (title.equalsIgnoreCase(movie.getTitle())){
+                matchTitle.add(movie);
+            }
+        }
+        if (matchTitle.isEmpty()) {
             System.out.println("\u001B[31mthe movie not exist\u001B[0m");
+            return;
         }
         int count = 0;
-        for (Movie movie : list) {
-            if (title.equalsIgnoreCase(movie.getTitle())) {
-                ++count;
-                controller.markAsWatched(movie);
+        if (matchTitle.size() > 1) {
+
+            for (int i = 0; i < matchTitle.size(); i++) {
+                Movie m = matchTitle.get(i);
+                System.out.println((i + 1) + "\u001B[31m :\u001B[0m " + m.getTitle() + "\u001B[31m som er fra\u001B[0m " + m.getYearCreated());
             }
+            int nummer;
+            while (true) {
+                try {
+                    System.out.println("\u001B[31mhvilket af dem skal markeres\u001B[0m");
+                    System.out.println("> ");
+                    nummer = scanner.nextInt();
+                    scanner.nextLine();
+                    if (nummer >= 1 && nummer <= matchTitle.size()) {
+                        break;
 
-            System.out.println(movie.getTitle() + "\u001B[31m fra\u001B[0m " + movie.getYearCreated() + " \u001B[31maf\u001B[0m " + movie.getDirector() + "\u001B[31m er markeret som set\u001B[0m");
+                    } else {
+                        System.out.println("vælge et gyldig nummer mellem 1 og " + matchTitle.size());
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("du skal indtaste et tal");
+                    scanner.nextLine();
+                }
+            }
+            String answer;
+            Movie choosedMovie = matchTitle.get(nummer - 1);
+            while (true) {
+
+                System.out.println("\u001B[31mvil du markere\u001B[0m " + choosedMovie.getTitle());
+                answer = scanner.nextLine();
+                if (answer.equalsIgnoreCase("yes")) {
+                    controller.markAsWatched(choosedMovie);
+                    count++;
+                    System.out.println(choosedMovie.getTitle() + "\u001B[31m er blevet markeret \u001B[0m" + count + "\u001B[31m film.\u001B[0m");
+                    System.out.println("\u001B[31mder blevet markeret\u001B[0m " + count + " \u001B[31mfilm\u001B[0m");
+                    break;
+                } else if (answer.equalsIgnoreCase("no")) {
+                    System.out.println(choosedMovie.getTitle() + "\u001B[31m blev ikke markeret\u001B[0m");
+                    break;
+                } else {
+                    System.out.println("svar med yes eller no");
+                }
+            }
+        } else {
+
+            String answer;
+            Movie choosedMovie = matchTitle.get(0);
+
+            while (true) {
+
+
+                //controller.deleteMovie(list.get(0));
+                System.out.println("\u001B[31mvil du markeret \u001B[0m" + choosedMovie.getTitle());
+                answer = scanner.nextLine();
+                if (answer.equalsIgnoreCase("yes")) {
+                    controller.markAsWatched(choosedMovie);
+                    count++;
+                    System.out.println(choosedMovie.getTitle() + "\u001B[31m er blevet markeret\u001B[0m");
+                    System.out.println("\u001B[31mder blevet markeret " + count + " film\u001B[0m");
+                    break;
+                } else if (answer.equalsIgnoreCase("no")) {
+                    System.out.println(choosedMovie.getTitle() + " \u001B[31mblev ikke markeret\u001B[0m");
+                    break;
+                } else {
+                    System.out.println("svar med yes eller no");
+                }
+
+            }
+//
+            System.out.println("\u001B[31mdet blevet markeret \u001B[0m" + count + " \u001B[31mfilm.\u001B[0m");
+
         }
-        System.out.println("\u001B[31mdet blevet markeret \u001B[0m" + count + " \u001B[31mfilm.\u001B[0m");
-
     }
 
     public void lastWatched() {
